@@ -1,35 +1,25 @@
-from posix import listdir
 import sys
 import os
-from PIL import Image, ImageFilter
+from PIL import Image
 
-# grab the first and second arguments
-source_folder = sys.argv[1]
-dest_folder = sys.argv[2]
-
-# check if the new folder exist  and create if not
-new_dir = dest_folder
-parent_dir = '/Users/mohaimenmacbookpro/Dev/_ZTM_Course/Projects/image_converter/'
-new_dir_path = os.path.join(parent_dir, new_dir)
-
-if os.path.exists(dest_folder):
-    print('folder exists')
-else:
-    os.mkdir(new_dir_path)
-# loop though the folder
+# grab the sourse and destination folder names from the terminal command
+image_folder = f'{sys.argv[1]}/'
+output_folder = f'{sys.argv[2]}/'
 
 
-for file in os.listdir(source_folder):
-    if not file.startswith('.'):
-        print(f'source folder:: {source_folder}')
-        print(f'destination folder:: {dest_folder}')
-        filename = os.fsdecode(file)
-        print(filename)
-        img = Image.open(parent_dir + source_folder + '/' + filename)
+# check if the output folder already exist. if it doesn't exist, create a new one
+if not os.path.exists(output_folder):
+    os.mkdir(output_folder)
+
+# loop over the images
+# convert to png format and apply black and white filter
+# save them to the output folder
+for filename in os.listdir(image_folder):
+    # .DS_Store is a hiden system file that may exist in the folder and cause an issue
+    # below if statement prevent the program from including .DS_Store in the loop
+    if not filename.startswith('.'):
+        img = Image.open(f'{image_folder}{filename}')
+        clean_name = os.path.splitext(filename)[0]
         grayed_img = img.convert('L')
-        grayed_img.save(
-            f'{parent_dir}{dest_folder}/{filename}.png', 'png')
-    else:
-        continue
-
-print('testing GitHub updates')
+        grayed_img .save(f'{output_folder}{clean_name}.png', 'png')
+        print('all done')
