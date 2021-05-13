@@ -31,3 +31,5 @@ for file in os.listdir(source_folder):
             f'{parent_dir}{dest_folder}/{filename}.png', 'png')
     else:
         continue
+
+print('testing GitHub updates')
